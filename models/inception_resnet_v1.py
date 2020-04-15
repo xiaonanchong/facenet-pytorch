@@ -326,6 +326,7 @@ def load_weights(mdl, name):
     state_dict = {}
     for i, path in enumerate([features_path, logits_path]):
         cached_file = os.path.join(model_dir, '{}_{}.pt'.format(name, path[-10:]))
+        print('use cached pt file from:', cached_file)
         if not os.path.exists(cached_file):
             print('Downloading parameters ({}/2)'.format(i+1))
             s = requests.Session()

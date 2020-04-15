@@ -3,7 +3,7 @@ import os
 
 def vgg_test_list(n):
 
-  path = '/home/ubuntu/data/vggface2/vggface2_test/test/'
+  path = '/home/ubuntu/data/vggface2/test/'
   c = 0
   t = 0
   with open("ms1m_face_test_list.txt",'w',encoding = 'utf-8') as f:
@@ -63,7 +63,7 @@ def casia_test_list(n):
   print('test list built!')
 
 #casia_test_list(400)
-vgg_test_list(400)
+vgg_test_list(100)
 
 '''
 with open("casia_face_regis_list.txt",'w',encoding = 'utf-8') as f:

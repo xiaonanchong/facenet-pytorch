@@ -16,11 +16,11 @@ def embedding(file_name):
   from models.mtcnn import MTCNN
   from models.inception_resnet_v1 import InceptionResnetV1
   workers = 10
-  device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-  #device = torch.device('cpu')
+  #device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+  device = torch.device('cpu')
   mtcnn = MTCNN(image_size=160, margin=0, min_face_size=20,
   thresholds=[0.6,0.7,0.7], factor=0.709, post_process=True, device=device)
-  resnet = InceptionResnetV1(pretrained='vggface2').eval().to(device)
+  resnet = InceptionResnetV1(pretrained='casia_webface').eval().to(device)
 
   crop_imgs = []
   labels = []
@@ -143,7 +143,7 @@ def test(ce):
       f.write(str(i)+'	')
     f.write('\n')
 
-'''
+#'''
 with open("result.txt",'a',encoding = 'utf-8') as f:
   for i in ['ce','tpr','tnr','fnr','fpr', 'mr', 'rr']:
     f.write(i+'	')
@@ -153,6 +153,5 @@ with open("result.txt",'a',encoding = 'utf-8') as f:
 for i in range(10):
   test(0.95 + i*0.01)
 
-'''
-
+#'''
 
