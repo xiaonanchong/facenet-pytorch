@@ -8,7 +8,7 @@ from torchvision import datasets, transforms
 import numpy as np
 import os
 
-data_dir = '/home/ubuntu/data/vggface2/test'
+data_dir = '/home/ubuntu/data/vggface2/train'
 
 batch_size = 32
 epochs = 8
@@ -16,13 +16,13 @@ workers = 0 if os.name=='nt' else 8
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 print('running on device: {}'.format(device))
-
+'''
 mtcnn=MTCNN(
 	image_size=160, margin=0, min_face_size=20,
 	thresholds=[0.6,0.7,0.7], factor=0.709, post_process=True,
 	device=device
 )
-
+'''
 dataset=datasets.ImageFolder(data_dir, transform=transforms.Resize((512,512)))
 dataset.samples=[
 	(p, p.replace(data_dir, data_dir+'cropped'))
@@ -35,13 +35,13 @@ loader = DataLoader(
 	batch_size=batch_size,
 	collate_fn=training.collate_pil
 )
-
+'''
 for i,(x,y) in enumerate(loader):
     mtcnn(x, save_path=y)
     print('\rBatch {} of {}'.format(i+1, len(loader)), end='')
 
 del mtcnn
-
+'''
 
 resnet = InceptionResnetV1(
 	classify=True,
@@ -52,12 +52,12 @@ resnet = InceptionResnetV1(
 optimizer = optim.Adam(resnet.parameters(), lr=0.001)
 scheduler = MultiStepLR(optimizer, [5,10])
 
-trans = transform.Compose([
+trans = transforms.Compose([
 	np.float32,
 	transforms.ToTensor(),
 	fixed_image_standardization
 ])
-dataset = datasets.ImageFolder(data_dir + '_cropped', transform=trans)
+dataset = datasets.ImageFolder(data_dir + 'cropped', transform=trans)
 img_inds = np.arange(len(dataset))
 np.random.shuffle(img_inds)
 train_inds = img_inds[:int(0.8 * len(img_inds))]
